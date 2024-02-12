@@ -1,0 +1,50 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+const PORT = 3000;
+
+app.use(bodyParser.json());
+
+// Placeholder arrays for users and reviews
+let users = [];
+let reviews = [];
+
+// Create user route
+app.post('/users', (req, res) => {
+  const { username, email } = req.body;
+  const newUser = { id: users.length + 1, username, email };
+  users.push(newUser);
+  res.status(201).json(newUser);
+});
+
+// Leave review route
+app.post('/reviews', (req, res) => {
+  const { userId, rating, comment } = req.body;
+  
+  // Check if user exists
+  const user = users.find(u => u.id === userId);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  const newReview = { userId, rating, comment };
+  reviews.push(newReview);
+  res.status(201).json(newReview);
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+// testing endpont 
+{
+  "username"; "",
+  "email"; ""
+}
+
+// testing endpoint
+{
+  "userId"; 1,
+  "rating"; 5,
+  "comment"; "Great app! Highly recommended."
+}

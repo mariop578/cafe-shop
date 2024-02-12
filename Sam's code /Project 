@@ -1,0 +1,73 @@
+// we are using a Node.js framework like Express
+
+const express = require('express');
+const router = express.Router();
+
+// Sample data 
+const usersData = [
+  { id: 1, name: '', email: '' },
+  { id: 2, name: '', email: '' },
+  { id: 3, name: '', email: ''},
+  { id: 5, name: '', email: ''},
+  { id: 5, name: '', email: ''},
+];
+
+
+const menuData = [
+  { id: 1, name: 'lemon poppy biscuit', price: 10.99 },
+  { id: 2, name: 'Breakfast Burrito', price: 12.99 },
+  { id: 3, name: 'Vanilla Latte', price: 8.88 },
+  { id: 4, name: 'Normal Coffee', price: 9.99 },
+  { id: 5, name: 'Caramel Frappuccino', price: 11.99},
+  { id: 6, name: 'Tomahawk Steak', price: 14.99},
+];
+
+const reviewsData = [
+  { id: 1, userId: 1, review: 'Great food, but rude server.', rating: 2 },
+  { id: 2, userId: 2, review: 'Nice place, but service could be better.', rating: 3 },
+  { id: 3, userId: 3, review: 'Great service.', rating: 5 },
+  { id: 3, userId: 4, review: 'Nice place, great wifi.', rating: 4 },
+  { id: 5, userId: 5, review: 'taste like overnight food.', rating: 1},
+  { id: 6, userId: 6, review: ''}
+];
+
+// GET route for fetching all users
+router.get('/users', (req, res) => {
+  res.json(usersData);
+});
+
+// GET route for fetching a specific user by ID
+router.get('/users/:id', (req, res) => {
+  const userId = parseInt(req.params.id);
+  const user = usersData.find(user => user.id === userId);
+
+  if (user) {
+    res.json(user);
+  } else {
+    res.status(404).json({ message: 'User not found' });
+  }
+});
+
+// GET route for fetching all menu items
+router.get('/menu', (req, res) => {
+  res.json(menuData);
+});
+
+// GET route for fetching all reviews
+router.get('/reviews', (req, res) => {
+  res.json(reviewsData);
+});
+
+// GET route for fetching reviews for a specific user
+router.get('/reviews/user/:userId', (req, res) => {
+  const userId = parseInt(req.params.userId);
+  const userReviews = reviewsData.filter(review => review.userId === userId);
+
+  if (userReviews.length > 0) {
+    res.json(userReviews);
+  } else {
+    res.status(404).json({ message: 'Reviews not found for the specified user' });
+  }
+});
+
+module.exports = router;
